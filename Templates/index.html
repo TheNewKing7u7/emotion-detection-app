@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Detector de Emociones IA</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <style>
+        body { background-color: #f8f9fa; padding-top: 50px; }
+        .container { max-width: 600px; background: white; padding: 30px; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+        h2 { color: #343a40; margin-bottom: 25px; }
+    </style>
+</head>
+<body>
+
+<div class="container text-center">
+    <h2>Análisis de Emociones en Feedback</h2>
+    <p class="text-muted">Introduce el comentario del cliente para analizar su estado emocional.</p>
+    
+    <div class="mb-3">
+        <textarea id="textToAnalyze" class="form-control" rows="4" placeholder="Ejemplo: I am so happy with this service!"></textarea>
+    </div>
+    
+    <button class="btn btn-primary w-100" onclick="analyzeEmotion()">Analizar Texto</button>
+    
+    <hr>
+    
+    <div id="system_response" class="mt-4 fw-bold text-primary">
+        <!-- Aquí aparecerá la respuesta de Flask -->
+    </div>
+</div>
+
+<script>
+    function analyzeEmotion() {
+        let text = document.getElementById("textToAnalyze").value;
+        let responseDiv = document.getElementById("system_response");
+        
+        responseDiv.innerHTML = "Analizando...";
+
+        fetch(`/emotionDetector?textToAnalyze=${encodeURIComponent(text)}`)
+            .then(response => response.text())
+            .then(data => {
+                responseDiv.innerHTML = data;
+            })
+            .catch(error => {
+                responseDiv.innerHTML = "Error al conectar con el servidor.";
+                console.error('Error:', error);
+            });
+    }
+</script>
+
+</body>
+</html>
